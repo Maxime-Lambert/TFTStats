@@ -1,0 +1,62 @@
+services:
+  tftstats.matches:
+    image: ${DOCKER_REGISTRY-}tftstatsmatches
+    build:
+      context: src/TFTStats.Matches/
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Database=Host=matches-db;Username=postgres;Password=postgres;Database=matches-db;
+    depends_on:
+        matches-db:
+          condition: service_healthy
+    restart: on-failure
+    ports:
+        - "5033:5033"
+
+  tftstats.summoners:
+    image: ${DOCKER_REGISTRY-}tftstatssummoners
+    build:
+      context: src/TFTStats.Summoners/
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Database=Host=summoners-db;Username=postgres;Password=postgres;Database=summoners-db;
+    depends_on:
+        summoners-db:
+          condition: service_healthy
+    restart: on-failure
+    ports:
+        - "5194:5194"
+
+  matches-db:
+    image: postgres:16.3
+    restart: always
+    environment:
+      - POSTGRES_DB=matches-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/database:/var/lib/postgressql/data
+    ports:
+      - 5433:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5 
+
+  summoners-db:
+    image: postgres:16.3
+    restart: always
+    environment:
+      - POSTGRES_DB=summoners-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/database:/var/lib/postgressql/data
+    ports:
+      - 5434:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5 
