@@ -20,6 +20,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__Database=Host=summoners-db;Username=postgres;Password=postgres;Database=summoners-db;
+      - MessageBroker__Host=TFTStats-mq 
     depends_on:
         summoners-db:
           condition: service_healthy
@@ -59,4 +60,19 @@ services:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
-      retries: 5 
+      retries: 5
+
+  TFTStats-mq:
+    image: rabbitmq:management
+    container_name: TFTStats.RabbitMq
+    hostname: TFTStats-mq
+    volumes:
+        - ./.containers/queue/data/:/var/lib/rabbitmq
+        - ./.containers/queue/log/:/var/log/rabbitmq
+    environment:
+        RABBITMQ_DEFAULT_USER: guest
+        RABBITMQ_DEFAULT_PASS: guest
+    ports:
+        - 5672:5672
+    
+

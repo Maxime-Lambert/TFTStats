@@ -7,17 +7,16 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["TFTStats.Summoners.csproj", "TFTStats.Summoners/"]
+COPY ["TFTStats.Summoners.csproj", ""]
 COPY [".editorconfig", ""]
 COPY ["Directory.Packages.props", ""]
-RUN dotnet restore "TFTStats.Summoners/TFTStats.Summoners.csproj"
+RUN dotnet restore "TFTStats.Summoners.csproj"
 
-WORKDIR "/src/TFTStats.Summoners"
 COPY . .
 RUN dotnet build "TFTStats.Summoners.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "TFTStats.Summoners.csproj" --no-restore -c $BUILD_CONFIGURATION -o /app/publish 
+RUN dotnet publish "TFTStats.Summoners.csproj" --no-restore -c $BUILD_CONFIGURATION -o /app/publish
 
 FROM base AS final
 WORKDIR /app

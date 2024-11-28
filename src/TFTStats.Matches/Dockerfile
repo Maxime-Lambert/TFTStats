@@ -7,12 +7,11 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["TFTStats.Matches.csproj", "TFTStats.Matches/"]
+COPY ["TFTStats.Matches.csproj", ""]
 COPY [".editorconfig", ""]
 COPY ["Directory.Packages.props", ""]
-RUN dotnet restore "TFTStats.Matches/TFTStats.Matches.csproj"
+RUN dotnet restore "TFTStats.Matches.csproj"
 
-WORKDIR "/src/TFTStats.Matches"
 COPY . .
 RUN dotnet build "TFTStats.Matches.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
