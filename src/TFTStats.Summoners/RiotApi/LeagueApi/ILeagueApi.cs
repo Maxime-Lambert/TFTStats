@@ -2,7 +2,7 @@
 
 namespace TFTStats.Summoners.RiotApi.LeagueApi;
 
-public interface ILeagueApi
+internal interface ILeagueApi
 {
     [Get("/tft/league/v1/master")]
     Task<ApiResponse<LeagueResponse>> GetMasterSummonersAsync([Query] GetLeagueQueryParameters parameters);

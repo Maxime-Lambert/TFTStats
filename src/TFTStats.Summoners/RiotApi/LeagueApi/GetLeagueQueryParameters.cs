@@ -2,7 +2,7 @@
 
 namespace TFTStats.Summoners.RiotApi.LeagueApi;
 
-public class GetLeagueQueryParameters(string queue, string riotApiKey)
+internal sealed class GetLeagueQueryParameters(string queue, string riotApiKey)
 {
     public string? Queue { get; set; } = queue;
     [AliasAs("api_key")]

@@ -1,6 +1,6 @@
 ﻿namespace TFTStats.Summoners.Options;
 
-public class RiotApiOptions
+internal sealed class RiotApiOptions
 {
     public string EUW { get; set; } = string.Empty;
     public string NA { get; set; } = string.Empty;

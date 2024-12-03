@@ -35,7 +35,7 @@ builder.Services.AddMassTransit(busConfigurator =>
 {
     busConfigurator.SetKebabCaseEndpointNameFormatter();
 
-    busConfigurator.AddConsumer<GetSummonersIdConsumer>();
+    _ = busConfigurator.AddConsumer<GetSummonersIdConsumer>();
 
     busConfigurator.UsingRabbitMq((context, configurator) =>
     {
@@ -51,20 +51,15 @@ builder.Services.AddMassTransit(busConfigurator =>
 
 builder.Services.AddScoped<IGetSummoners, RiotSummonerService>();
 
-builder.Services.AddDbContext<ApplicationDbContext>((dbContextOptionsBuilder) =>
-{
-    dbContextOptionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString("Database")!);
-});
+builder.Services.AddDbContext<ApplicationDbContext>((dbContextOptionsBuilder) => _ = dbContextOptionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString("Database")!));
 
 var app = builder.Build();
 
 if (!app.Environment.IsProduction())
 {
-    using (var scope = app.Services.CreateScope())
-    {
-        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        await db.Database.MigrateAsync().ConfigureAwait(false);
-    }
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await db.Database.MigrateAsync().ConfigureAwait(false);
 }
 
 app.UseSwagger();
@@ -74,25 +69,11 @@ app.UseHttpsRedirection();
 
 app.UseSerilogRequestLogging();
 
-app.MapGet("/master", async (IGetSummoners service) =>
-{
-    await service.AddMasterSummoners().ConfigureAwait(false);
-});
+app.MapGet("/requestMasterSummonersInfos", async (IGetSummoners service) => await service.AddMasterSummoners().ConfigureAwait(false));
 
-app.MapGet("/grandMaster", async (IGetSummoners service) =>
-{
-    await service.AddGrandMasterSummoners().ConfigureAwait(false);
-});
+app.MapGet("/requestGrandMasterSummonersInfos", async (IGetSummoners service) => await service.AddGrandMasterSummoners().ConfigureAwait(false));
 
-app.MapGet("/challengers", async (IGetSummoners service) =>
-{
-    await service.AddChallengerSummoners().ConfigureAwait(false);
-});
-
-app.MapGet("/rabbit", async (IPublishEndpoint publishEndpoint) =>
-{
-    await publishEndpoint.Publish(new GetSummonersIdEvent()).ConfigureAwait(false);
-});
+app.MapGet("/requestChallengerSummonersInfos", async (IGetSummoners service) => await service.AddChallengerSummoners().ConfigureAwait(false));
 
 app.MapHealthChecks("health", new HealthCheckOptions
 {

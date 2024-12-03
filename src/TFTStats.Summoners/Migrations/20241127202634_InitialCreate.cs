@@ -5,12 +5,12 @@
 namespace TFTStats.Summoners.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    internal partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
+            _ = migrationBuilder.CreateTable(
                 name: "Summoners",
                 columns: table => new
                 {
@@ -19,14 +19,14 @@ namespace TFTStats.Summoners.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Summoners", x => x.Id);
+                    _ = table.PrimaryKey("PK_Summoners", x => x.Id);
                 });
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
+            _ = migrationBuilder.DropTable(
                 name: "Summoners");
         }
     }

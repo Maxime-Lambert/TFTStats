@@ -2,10 +2,12 @@ services:
   tftstats.matches:
     image: ${DOCKER_REGISTRY-}tftstatsmatches
     build:
-      context: src/TFTStats.Matches/
+      context: src/
+      dockerfile: MatchesDockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__Database=Host=matches-db;Username=postgres;Password=postgres;Database=matches-db;
+      - MessageBroker__Host=TFTStats-mq 
     depends_on:
         matches-db:
           condition: service_healthy
@@ -16,7 +18,8 @@ services:
   tftstats.summoners:
     image: ${DOCKER_REGISTRY-}tftstatssummoners
     build:
-      context: src/TFTStats.Summoners/
+      context: src/
+      dockerfile: SummonersDockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__Database=Host=summoners-db;Username=postgres;Password=postgres;Database=summoners-db;

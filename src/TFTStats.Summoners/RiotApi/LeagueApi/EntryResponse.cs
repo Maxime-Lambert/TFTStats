@@ -1,5 +1,5 @@
 ﻿namespace TFTStats.Summoners.RiotApi.LeagueApi;
 
-public sealed record EntryResponse(
+internal sealed record EntryResponse(
     string summonerId
 );

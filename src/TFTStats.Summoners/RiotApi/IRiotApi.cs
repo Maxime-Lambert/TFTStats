@@ -3,4 +3,4 @@ using TFTStats.Summoners.RiotApi.SummonerApi;
 
 namespace TFTStats.Summoners.RiotApi;
 
-public interface IRiotApi : ILeagueApi, ISummonerApi { }
+internal interface IRiotApi : ILeagueApi, ISummonerApi { }

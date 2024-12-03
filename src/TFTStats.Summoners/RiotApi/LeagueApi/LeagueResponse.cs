@@ -1,5 +1,5 @@
 ﻿namespace TFTStats.Summoners.RiotApi.LeagueApi;
 
-public sealed record LeagueResponse(
+internal sealed record LeagueResponse(
     IReadOnlyList<EntryResponse> entries
 );

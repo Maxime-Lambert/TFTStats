@@ -1,5 +1,5 @@
 ﻿namespace TFTStats.Summoners.RiotApi.SummonerApi;
 
-public record SummonerResponse(
+internal sealed record SummonerResponse(
     string Puuid
 );

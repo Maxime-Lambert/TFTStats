@@ -1,10 +1,10 @@
 ﻿namespace TFTStats.Summoners.Features.Summoners.GetAllSummoners;
 
-public interface IGetSummoners
+internal interface IGetSummoners
 {
-    public Task<Task> AddMasterSummoners();
+    public Task AddMasterSummoners();
 
-    public Task<Task> AddGrandMasterSummoners();
+    public Task AddGrandMasterSummoners();
 
-    public Task<Task> AddChallengerSummoners();
+    public Task AddChallengerSummoners();
 }
